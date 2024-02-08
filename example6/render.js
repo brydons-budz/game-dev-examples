@@ -6,13 +6,14 @@ export const configuration = Object.freeze({
 });
 
 // NOTE: This function doesn't modify anything from outside of itself - "referentially transparent" / aka a "pure function".
-export const createFragmentAtSize = ({ width, height }) => Object.assign(document.createElement('template'), {
-	innerHTML: `
+export const createFragmentAtSize = ({ width, height }) =>
+	Object.assign(document.createElement('template'), {
+		innerHTML: `
 		<div class="canvas-wrapper">
 			<canvas width="${width}" height="${height}" />
 		</div>
 	`,
-}).content;
+	}).content;
 
 export const getContextFromFragment = (fragment) => fragment.querySelector('canvas')?.getContext('2d');
 
@@ -20,11 +21,11 @@ export const getContextFromFragment = (fragment) => fragment.querySelector('canv
 // The returned function is called a "closure" because it holds references to data outside of its definition. (Ex. netDashes)
 export const createRenderAtSize = ({ width, height }) => {
 	const centerX = width / 2;
-	
+
 	// Pre-calculate where the dashes will be drawn
-	const netHeight = (height - ((configuration.net.dashCount - 1) * configuration.net.gap)) / configuration.net.dashCount;
+	const netHeight = (height - (configuration.net.dashCount - 1) * configuration.net.gap) / configuration.net.dashCount;
 	const netDashes = Array.from({ length: configuration.net.dashCount }, (_, i) => ({
-		x: centerX - (configuration.net.width / 2),
+		x: centerX - configuration.net.width / 2,
 		y: (netHeight + configuration.net.gap) * i,
 		width: configuration.net.width,
 		height: netHeight,
@@ -57,7 +58,12 @@ export const createRenderAtSize = ({ width, height }) => {
 		context.fillRect(configuration.paddles.margin, state.player1.paddle.y, configuration.paddles.width, configuration.paddles.height);
 
 		// Draw paddle #2
-		context.fillRect(width - configuration.paddles.margin, state.player2.paddle.y, configuration.paddles.width, configuration.paddles.height);
+		context.fillRect(
+			width - configuration.paddles.margin,
+			state.player2.paddle.y,
+			configuration.paddles.width,
+			configuration.paddles.height
+		);
 
 		return canvasElement;
 	};

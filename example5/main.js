@@ -1,9 +1,4 @@
-import {
-	configuration as renderConfiguration,
-	createFragmentAtSize,
-	getContextFromFragment,
-	createRenderAtSize
-} from './render.js';
+import { configuration as renderConfiguration, createFragmentAtSize, getContextFromFragment, createRenderAtSize } from './render.js';
 
 const configuration = Object.freeze({
 	rootSelector: '.js-game-root',
@@ -18,9 +13,12 @@ const main = () => {
 
 	// "State" is data that is expected to change
 	const state = {
-		player1: { score: 3, paddle: { y: (configuration.size.height / 2) - (renderConfiguration.paddles.height / 2) } },
-		player2: { score: 0, paddle: { y: (configuration.size.height / 2) - (renderConfiguration.paddles.height / 2) } },
-		ball: { x: (configuration.size.width / 2) - 240, y: (configuration.size.height / 2) - (renderConfiguration.ball.height / 2) },
+		player1: { score: 3, paddle: { y: configuration.size.height / 2 - renderConfiguration.paddles.height / 2 } },
+		player2: { score: 0, paddle: { y: configuration.size.height / 2 - renderConfiguration.paddles.height / 2 } },
+		ball: {
+			x: configuration.size.width / 2 - 240,
+			y: configuration.size.height / 2 - renderConfiguration.ball.height / 2,
+		},
 	};
 
 	// Draw the frame

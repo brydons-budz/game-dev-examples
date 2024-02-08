@@ -1,6 +1,6 @@
 <svg class="svg-icon" style="vertical-align: middle; stroke: rgb(103,103,220); stroke-width: 20; fill: rgb(153,153,270);overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
 	<filter id="neon">
-		<feFlood flood-color=" rgb(133,133,250)" flood-opacity="0.5" in="SourceGraphic" />
+		<feFlood flood-color="rgb(133,133,250)" flood-opacity="0.5" in="SourceGraphic" />
 		<feComposite operator="in" in2="SourceGraphic" />
 		<feGaussianBlur stdDeviation="20" />
 		<feComponentTransfer result="glow1">
