@@ -24,8 +24,9 @@ export const createRenderAtSize = ({ width, height }) => {
 
 	// Pre-calculate where the dashes will be drawn
 	const netHeight = (height - (configuration.net.dashCount - 1) * configuration.net.gap) / configuration.net.dashCount;
+	const netX = centerX - configuration.net.width / 2; // calculate once, reuse value for each loop
 	const netDashes = Array.from({ length: configuration.net.dashCount }, (_, i) => ({
-		x: centerX - configuration.net.width / 2,
+		x: netX,
 		y: (netHeight + configuration.net.gap) * i,
 		width: configuration.net.width,
 		height: netHeight,
