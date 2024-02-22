@@ -2,7 +2,7 @@ import { initializeState } from './state.js';
 import { configuration, initializeRender } from './render.js';
 
 const createMain = () => {
-	const { keyState, keydownListener, keyupListener, state, getNextState } = initializeState({
+	const { keyState, keydownListener, keyupListener, gameState, getNextGameState } = initializeState({
 		configuration,
 		onKeyStateChange: (nextKeyState) => {
 			Object.assign(keyState, nextKeyState); // side-effect
@@ -18,12 +18,12 @@ const createMain = () => {
 		window.requestAnimationFrame(gameLoop);
 		const sinceLastTimestamp = timestamp - lastTimestamp;
 		if (sinceLastTimestamp >= configuration.maxFramesPerSecond) {
-			const nextState = getNextState(sinceLastTimestamp, keyState, state);
-			const renderedCanvas = render(nextState);
+			const nextGameState = getNextGameState(sinceLastTimestamp, keyState, gameState);
+			const renderedCanvas = render(nextGameState);
 			context.clearRect(0, 0, configuration.size.width, configuration.size.height); // side-effect
 			context.drawImage(renderedCanvas, 0, 0); // side-effect
 			lastTimestamp = timestamp; // side-effect
-			Object.assign(state, nextState); // side-effect
+			Object.assign(gameState, nextGameState); // side-effect
 		}
 	};
 

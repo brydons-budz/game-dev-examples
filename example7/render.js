@@ -39,7 +39,7 @@ export const initializeRender = () => {
 		fragment,
 		canvas,
 		context,
-		render: (state) => {
+		render: (gameState) => {
 			const canvasElement = Object.assign(document.createElement('canvas'), { width, height });
 			const context = Object.assign(canvasElement.getContext('2d'), {
 				fillStyle: '#ddddff',
@@ -55,19 +55,19 @@ export const initializeRender = () => {
 			}
 
 			// Draw the scores
-			context.fillText(state.player1.score.toString(), centerX - configuration.scores.fromCenterX, configuration.scores.fromTop);
-			context.fillText(state.player2.score.toString(), centerX + configuration.scores.fromCenterX, configuration.scores.fromTop);
+			context.fillText(gameState.player1.score.toString(), centerX - configuration.scores.fromCenterX, configuration.scores.fromTop);
+			context.fillText(gameState.player2.score.toString(), centerX + configuration.scores.fromCenterX, configuration.scores.fromTop);
 
 			// Draw the "ball"
-			context.fillRect(state.ball.x, state.ball.y, configuration.ball.width, configuration.ball.height);
+			context.fillRect(gameState.ball.x, gameState.ball.y, configuration.ball.width, configuration.ball.height);
 
 			// Draw paddle #1
-			context.fillRect(configuration.paddles.margin, state.player1.paddle.y, configuration.paddles.width, configuration.paddles.height);
+			context.fillRect(configuration.paddles.margin, gameState.player1.paddle.y, configuration.paddles.width, configuration.paddles.height);
 
 			// Draw paddle #2
 			context.fillRect(
 				width - configuration.paddles.margin,
-				state.player2.paddle.y,
+				gameState.player2.paddle.y,
 				configuration.paddles.width,
 				configuration.paddles.height
 			);

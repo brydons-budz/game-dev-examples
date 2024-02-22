@@ -33,7 +33,7 @@ export const initializeState = ({ configuration, onKeyStateChange }) => {
 		keyState: structuredClone(keyState),
 		keydownListener: keyEventListener.bind(undefined, true),
 		keyupListener: keyEventListener.bind(undefined, false),
-		state: {
+		gameState: {
 			player1: {
 				score: 3,
 				paddle: { y: initialPaddleY },
@@ -48,52 +48,52 @@ export const initializeState = ({ configuration, onKeyStateChange }) => {
 				y: configuration.size.height / 2 - configuration.ball.height / 2,
 			},
 		},
-		getNextState: (sinceLastTimestamp, keyState, previousState) => {
-			const state = structuredClone(previousState);
+		getNextGameState: (sinceLastTimestamp, keyState, previousState) => {
+			const gameState = structuredClone(previousState);
 
 			// Move the paddles (NEW)
 			if (keyState.player1.up) { 
-				state.player1.paddle.y -= paddleVelocity * sinceLastTimestamp;
+				gameState.player1.paddle.y -= paddleVelocity * sinceLastTimestamp;
 			}
 			if (keyState.player1.down) { 
-				state.player1.paddle.y += paddleVelocity * sinceLastTimestamp;
+				gameState.player1.paddle.y += paddleVelocity * sinceLastTimestamp;
 			}
 			if (keyState.player2.up) { 
-				state.player2.paddle.y -= paddleVelocity * sinceLastTimestamp;
+				gameState.player2.paddle.y -= paddleVelocity * sinceLastTimestamp;
 			}
 			if (keyState.player2.down) { 
-				state.player2.paddle.y += paddleVelocity * sinceLastTimestamp;
+				gameState.player2.paddle.y += paddleVelocity * sinceLastTimestamp;
 			}
 
 			// Prevent moving paddles off the screen (NEW)
-			state.player1.paddle.y = Math.min(Math.max(state.player1.paddle.y, 0), configuration.size.height - configuration.paddles.height);
-			state.player2.paddle.y = Math.min(Math.max(state.player2.paddle.y, 0), configuration.size.height - configuration.paddles.height);
+			gameState.player1.paddle.y = Math.min(Math.max(gameState.player1.paddle.y, 0), configuration.size.height - configuration.paddles.height);
+			gameState.player2.paddle.y = Math.min(Math.max(gameState.player2.paddle.y, 0), configuration.size.height - configuration.paddles.height);
 	
 			// Move the ball
-			state.ball.x += state.ball.velocity.x * sinceLastTimestamp;
-			state.ball.y += state.ball.velocity.y * sinceLastTimestamp;
+			gameState.ball.x += gameState.ball.velocity.x * sinceLastTimestamp;
+			gameState.ball.y += gameState.ball.velocity.y * sinceLastTimestamp;
 
 			if (
 				// AABB collision detection with first paddle (see https://developer.mozilla.org/en-US/docs/Games/Techniques/2D_collision_detection#axis-aligned_bounding_box)
-				(state.ball.x < configuration.paddles.margin + configuration.paddles.width &&
-					state.ball.x + configuration.ball.width > configuration.paddles.margin &&
-					state.ball.y < state.player1.paddle.y + configuration.paddles.height &&
-					state.ball.y + configuration.ball.height > state.player1.paddle.y) ||
+				(gameState.ball.x < configuration.paddles.margin + configuration.paddles.width &&
+					gameState.ball.x + configuration.ball.width > configuration.paddles.margin &&
+					gameState.ball.y < gameState.player1.paddle.y + configuration.paddles.height &&
+					gameState.ball.y + configuration.ball.height > gameState.player1.paddle.y) ||
 				// AABB collision detection with second paddle
-				(state.ball.x < configuration.size.width - configuration.paddles.margin + configuration.paddles.width &&
-					state.ball.x + configuration.ball.width > configuration.size.width - configuration.paddles.margin &&
-					state.ball.y < state.player2.paddle.y + configuration.paddles.height &&
-					state.ball.y + configuration.ball.height > state.player2.paddle.y)
+				(gameState.ball.x < configuration.size.width - configuration.paddles.margin + configuration.paddles.width &&
+					gameState.ball.x + configuration.ball.width > configuration.size.width - configuration.paddles.margin &&
+					gameState.ball.y < gameState.player2.paddle.y + configuration.paddles.height &&
+					gameState.ball.y + configuration.ball.height > gameState.player2.paddle.y)
 			) {
-				state.ball.velocity.x = state.ball.velocity.x * -1; // Reverse direction
+				gameState.ball.velocity.x = gameState.ball.velocity.x * -1; // Reverse direction
 			}
 	
 			// Collision detection with top or bottom of the screen
-			if (state.ball.y <= 0 || state.ball.y + configuration.ball.height > configuration.size.height) {
-				state.ball.velocity.y = state.ball.velocity.y * -1; // Reverse direction
+			if (gameState.ball.y <= 0 || gameState.ball.y + configuration.ball.height > configuration.size.height) {
+				gameState.ball.velocity.y = gameState.ball.velocity.y * -1; // Reverse direction
 			}
 	
-			return state;
+			return gameState;
 		},
 	}
 };
