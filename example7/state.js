@@ -3,7 +3,7 @@ const paddleVelocity = 0.5;
 
 // NEW!
 // Pass onKeyStateChange callback to move side effects out of this function
-export const initializeState = ({ configuration, renderConfiguration, onKeyStateChange }) => {
+export const initializeState = ({ configuration, onKeyStateChange }) => {
 	const keyState = {
 		player1: { up: false, down: false },
 		player2: { up: false, down: false },
@@ -28,7 +28,7 @@ export const initializeState = ({ configuration, renderConfiguration, onKeyState
 		}
 	};
 
-	const initialPaddleY = configuration.size.height / 2 - renderConfiguration.paddles.height / 2;
+	const initialPaddleY = configuration.size.height / 2 - configuration.paddles.height / 2;
 	return {
 		keyState: structuredClone(keyState),
 		keydownListener: keyEventListener.bind(undefined, true),
@@ -45,7 +45,7 @@ export const initializeState = ({ configuration, renderConfiguration, onKeyState
 			ball: {
 				velocity: { x: 0.5, y: 0.5 },
 				x: configuration.size.width / 2 - 240,
-				y: configuration.size.height / 2 - renderConfiguration.ball.height / 2,
+				y: configuration.size.height / 2 - configuration.ball.height / 2,
 			},
 		},
 		getNextState: (sinceLastTimestamp, keyState, previousState) => {
@@ -66,8 +66,8 @@ export const initializeState = ({ configuration, renderConfiguration, onKeyState
 			}
 
 			// Prevent moving paddles off the screen (NEW)
-			state.player1.paddle.y = Math.min(Math.max(state.player1.paddle.y, 0), configuration.size.height - renderConfiguration.paddles.height);
-			state.player2.paddle.y = Math.min(Math.max(state.player2.paddle.y, 0), configuration.size.height - renderConfiguration.paddles.height);
+			state.player1.paddle.y = Math.min(Math.max(state.player1.paddle.y, 0), configuration.size.height - configuration.paddles.height);
+			state.player2.paddle.y = Math.min(Math.max(state.player2.paddle.y, 0), configuration.size.height - configuration.paddles.height);
 	
 			// Move the ball
 			state.ball.x += state.ball.velocity.x * sinceLastTimestamp;
@@ -75,21 +75,21 @@ export const initializeState = ({ configuration, renderConfiguration, onKeyState
 
 			if (
 				// AABB collision detection with first paddle (see https://developer.mozilla.org/en-US/docs/Games/Techniques/2D_collision_detection#axis-aligned_bounding_box)
-				(state.ball.x < renderConfiguration.paddles.margin + renderConfiguration.paddles.width &&
-					state.ball.x + renderConfiguration.ball.width > renderConfiguration.paddles.margin &&
-					state.ball.y < state.player1.paddle.y + renderConfiguration.paddles.height &&
-					state.ball.y + renderConfiguration.ball.height > state.player1.paddle.y) ||
+				(state.ball.x < configuration.paddles.margin + configuration.paddles.width &&
+					state.ball.x + configuration.ball.width > configuration.paddles.margin &&
+					state.ball.y < state.player1.paddle.y + configuration.paddles.height &&
+					state.ball.y + configuration.ball.height > state.player1.paddle.y) ||
 				// AABB collision detection with second paddle
-				(state.ball.x < configuration.size.width - renderConfiguration.paddles.margin + renderConfiguration.paddles.width &&
-					state.ball.x + renderConfiguration.ball.width > configuration.size.width - renderConfiguration.paddles.margin &&
-					state.ball.y < state.player2.paddle.y + renderConfiguration.paddles.height &&
-					state.ball.y + renderConfiguration.ball.height > state.player2.paddle.y)
+				(state.ball.x < configuration.size.width - configuration.paddles.margin + configuration.paddles.width &&
+					state.ball.x + configuration.ball.width > configuration.size.width - configuration.paddles.margin &&
+					state.ball.y < state.player2.paddle.y + configuration.paddles.height &&
+					state.ball.y + configuration.ball.height > state.player2.paddle.y)
 			) {
 				state.ball.velocity.x = state.ball.velocity.x * -1; // Reverse direction
 			}
 	
 			// Collision detection with top or bottom of the screen
-			if (state.ball.y <= 0 || state.ball.y + renderConfiguration.ball.height > configuration.size.height) {
+			if (state.ball.y <= 0 || state.ball.y + configuration.ball.height > configuration.size.height) {
 				state.ball.velocity.y = state.ball.velocity.y * -1; // Reverse direction
 			}
 	

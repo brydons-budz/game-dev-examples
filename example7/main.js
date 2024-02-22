@@ -1,16 +1,9 @@
 import { initializeState } from './state.js';
-import { configuration as renderConfiguration, initializeRender } from './render.js';
-
-const configuration = Object.freeze({
-	rootSelector: '.js-game-root',
-	size: Object.freeze({ width: 1920, height: 1080 }),
-	maxFramesPerSecond: 1000 / 60,
-});
+import { configuration, initializeRender } from './render.js';
 
 const createMain = () => {
 	const { keyState, keydownListener, keyupListener, state, getNextState } = initializeState({
 		configuration,
-		renderConfiguration,
 		onKeyStateChange: (nextKeyState) => {
 			Object.assign(keyState, nextKeyState); // side-effect
 		},
@@ -18,7 +11,7 @@ const createMain = () => {
 	document.addEventListener('keydown', keydownListener); // side-effect
 	document.addEventListener('keyup', keyupListener); // side-effect
 
-	const { fragment, context, render } = initializeRender(configuration.size);
+	const { fragment, context, render } = initializeRender();
 
 	let lastTimestamp = window.performance.now();
 	const gameLoop = (timestamp) => {

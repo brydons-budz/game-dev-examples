@@ -1,4 +1,7 @@
 export const configuration = Object.freeze({
+	rootSelector: '.js-game-root',
+	size: Object.freeze({ width: 1920, height: 1080 }),
+	maxFramesPerSecond: 1000 / 60,
 	net: Object.freeze({ dashCount: 20, gap: 16, width: 8 }),
 	scores: Object.freeze({ fromCenterX: 100, fromTop: 50 }),
 	paddles: Object.freeze({ width: 30, height: 100, margin: 50 }),
@@ -7,7 +10,8 @@ export const configuration = Object.freeze({
 
 // NOTE: This function creates and returns another function.
 // The returned function is called a "closure" because it holds references to data outside of its definition. (Ex. netDashes)
-export const initializeRender = ({ width, height }) => {
+export const initializeRender = () => {
+	const { width, height } = configuration.size;
 	const centerX = width / 2;
 
 	// Pre-calculate where the dashes will be drawn
