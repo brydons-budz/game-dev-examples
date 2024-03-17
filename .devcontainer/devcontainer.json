@@ -1,0 +1,38 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/javascript-node
+{
+	"name": "${localWorkspaceFolderBasename}",
+
+	// Or use a Docker Compose file or a pre-built image. More info: https://containers.dev/guide/dockerfile
+	"image": "mcr.microsoft.com/devcontainers/javascript-node:0-20-bullseye",
+
+	"remoteEnv": {
+		"VISUAL": "code --wait",
+		"EDITOR": "code --wait",
+		"LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
+	},
+
+	// Configure tool-specific properties.
+	"customizations": {
+		// Configure properties specific to VS Code.
+		"vscode": {
+			"extensions": [
+				"ms-azuretools.vscode-docker",
+				"bierner.github-markdown-preview",
+				"mhutchie.git-graph",
+				"streetsidesoftware.code-spell-checker",
+				"editorconfig.editorconfig",
+				"dbaeumer.vscode-eslint",
+				"esbenp.prettier-vscode"
+			]
+		}
+	},
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	"forwardPorts": [8080],
+
+	// Use 'postCreateCommand' to run commands after the container is created.
+	"postCreateCommand": "npm ci",
+
+	"remoteUser": "node"
+}

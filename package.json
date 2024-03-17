@@ -1,0 +1,30 @@
+{
+	"name": "examples",
+	"private": true,
+	"version": "0.1.0",
+	"description": "A series of JavaScript-based game development examples for learning purposes.",
+	"author": "Brydon DeWitt",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/brydons-budz/game-dev-examples/issues"
+	},
+	"homepage": "https://github.com/brydons-budz/game-dev-examples#readme",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/brydons-budz/game-dev-examples.git"
+	},
+	"main": "index.js",
+	"scripts": {
+		"start": "http-server . -c-1",
+		"format": "prettier . --write",
+		"lint": "eslint ./"
+	},
+	"devDependencies": {
+		"@typescript-eslint/eslint-plugin": "^7.2.0",
+		"eslint": "^8.57.0",
+		"eslint-config-prettier": "^9.1.0",
+		"eslint-plugin-prettier": "^5.1.3",
+		"http-server": "^14.1.1",
+		"prettier": "^3.2.5"
+	}
+}

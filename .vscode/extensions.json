@@ -1,0 +1,11 @@
+{
+	"recommendations": [
+		"ms-azuretools.vscode-docker",
+		"bierner.github-markdown-preview",
+		"mhutchie.git-graph",
+		"streetsidesoftware.code-spell-checker",
+		"editorconfig.editorconfig",
+		"dbaeumer.vscode-eslint",
+		"esbenp.prettier-vscode"
+	]
+}
