@@ -52,23 +52,29 @@ export const initializeState = ({ configuration, onKeyStateChange }) => {
 			const gameState = structuredClone(previousState);
 
 			// Move the paddles (NEW)
-			if (keyState.player1.up) { 
+			if (keyState.player1.up) {
 				gameState.player1.paddle.y -= paddleVelocity * sinceLastTimestamp;
 			}
-			if (keyState.player1.down) { 
+			if (keyState.player1.down) {
 				gameState.player1.paddle.y += paddleVelocity * sinceLastTimestamp;
 			}
-			if (keyState.player2.up) { 
+			if (keyState.player2.up) {
 				gameState.player2.paddle.y -= paddleVelocity * sinceLastTimestamp;
 			}
-			if (keyState.player2.down) { 
+			if (keyState.player2.down) {
 				gameState.player2.paddle.y += paddleVelocity * sinceLastTimestamp;
 			}
 
 			// Prevent moving paddles off the screen (NEW)
-			gameState.player1.paddle.y = Math.min(Math.max(gameState.player1.paddle.y, 0), configuration.size.height - configuration.paddles.height);
-			gameState.player2.paddle.y = Math.min(Math.max(gameState.player2.paddle.y, 0), configuration.size.height - configuration.paddles.height);
-	
+			gameState.player1.paddle.y = Math.min(
+				Math.max(gameState.player1.paddle.y, 0),
+				configuration.size.height - configuration.paddles.height
+			);
+			gameState.player2.paddle.y = Math.min(
+				Math.max(gameState.player2.paddle.y, 0),
+				configuration.size.height - configuration.paddles.height
+			);
+
 			// Move the ball
 			gameState.ball.x += gameState.ball.velocity.x * sinceLastTimestamp;
 			gameState.ball.y += gameState.ball.velocity.y * sinceLastTimestamp;
@@ -87,13 +93,13 @@ export const initializeState = ({ configuration, onKeyStateChange }) => {
 			) {
 				gameState.ball.velocity.x = gameState.ball.velocity.x * -1; // Reverse direction
 			}
-	
+
 			// Collision detection with top or bottom of the screen
 			if (gameState.ball.y <= 0 || gameState.ball.y + configuration.ball.height > configuration.size.height) {
 				gameState.ball.velocity.y = gameState.ball.velocity.y * -1; // Reverse direction
 			}
-	
+
 			return gameState;
 		},
-	}
+	};
 };

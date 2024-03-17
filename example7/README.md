@@ -15,6 +15,7 @@ const [count, setCount] = createSignal(0);
 ```
 
 These two examples are array destructuring. There's no name to extract, just a position/index in the array that we are assigning to a new variable name. In our code, we are using object destructuring.
+
 ```ts
 const { fragment, context, render } = initializeRender(configuration.size);
 ```
