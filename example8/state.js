@@ -1,15 +1,19 @@
-const keyCodeMap = Object.freeze({ w: 87, s: 83, up: 38, down: 40 });
+const keyCodeMap = Object.freeze({ w: 87, s: 83, up: 38, down: 40, esc: 27 });
 const paddleVelocity = 0.5;
 
-// NEW!
 // Pass onKeyStateChange callback to move side effects out of this function
 export const initializeState = ({ configuration, onKeyStateChange }) => {
 	const keyState = {
+		pause: false,
 		player1: { up: false, down: false },
 		player2: { up: false, down: false },
 	};
 
 	const keyEventListener = (value, event) => {
+		if (event.keyCode === keyCodeMap.esc) {
+			keyState.pause = value;
+			onKeyStateChange(structuredClone(keyState));
+		}
 		if (event.keyCode === keyCodeMap.w) {
 			keyState.player1.up = value;
 			onKeyStateChange(structuredClone(keyState));
@@ -28,12 +32,22 @@ export const initializeState = ({ configuration, onKeyStateChange }) => {
 		}
 	};
 
+	const releaseKeyPresses = () => {
+		// Handle pause button (it should only be "pressed" for a single update)
+		if (keyState.pause) {
+			keyState.pause = false;
+			onKeyStateChange(structuredClone(keyState));
+		}
+	};
+
 	const initialPaddleY = configuration.size.height / 2 - configuration.paddles.height / 2;
 	return {
 		keyState: structuredClone(keyState),
 		keydownListener: keyEventListener.bind(undefined, true),
 		keyupListener: keyEventListener.bind(undefined, false),
+		releaseKeyPresses,
 		gameState: {
+			mode: 'playing', // or 'paused'
 			player1: {
 				score: 3,
 				paddle: { y: initialPaddleY },
@@ -50,6 +64,16 @@ export const initializeState = ({ configuration, onKeyStateChange }) => {
 		},
 		getNextGameState: (sinceLastTimestamp, keyState, previousState) => {
 			const gameState = structuredClone(previousState);
+
+			// Handle pause/unpause
+			if (keyState.pause) {
+				gameState.mode = gameState.mode === 'playing' ? 'paused' : 'playing';
+			}
+
+			// When game is paused, early escape (no other state updates)
+			if (gameState.mode === 'paused') {
+				return gameState;
+			}
 
 			// Move the paddles (NEW)
 			if (keyState.player1.up) {

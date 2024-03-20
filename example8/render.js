@@ -13,6 +13,7 @@ export const configuration = Object.freeze({
 export const initializeRender = () => {
 	const { width, height } = configuration.size;
 	const centerX = width / 2;
+	const centerY = height / 2;
 
 	// Pre-calculate where the dashes will be drawn
 	const netHeight = (height - (configuration.net.dashCount - 1) * configuration.net.gap) / configuration.net.dashCount;
@@ -52,6 +53,12 @@ export const initializeRender = () => {
 			// Draw the dashed line down the center (the "net")
 			for (const netDash of netDashes) {
 				context.fillRect(netDash.x, netDash.y, netDash.width, netDash.height);
+			}
+
+			// When game is paused, draw "Paused" and early escape (no other rendering)
+			if (gameState.mode === 'paused') {
+				context.fillText('Paused', centerX, centerY);
+				return canvasElement;
 			}
 
 			// Draw the scores

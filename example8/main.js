@@ -2,7 +2,7 @@ import { initializeState } from './state.js';
 import { configuration, initializeRender } from './render.js';
 
 const createMain = () => {
-	const { keyState, keydownListener, keyupListener, gameState, getNextGameState } = initializeState({
+	const { keyState, keydownListener, keyupListener, releaseKeyPresses, gameState, getNextGameState } = initializeState({
 		configuration,
 		onKeyStateChange: (nextKeyState) => {
 			Object.assign(keyState, nextKeyState); // side-effect
@@ -24,6 +24,7 @@ const createMain = () => {
 			context.drawImage(renderedCanvas, 0, 0); // side-effect
 			lastTimestamp = timestamp; // side-effect
 			Object.assign(gameState, nextGameState); // side-effect
+			releaseKeyPresses();
 		}
 	};
 
