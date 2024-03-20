@@ -1,7 +1,7 @@
 import { initializeState } from './state.js';
 import { configuration, initializeRender } from './render.js';
 
-const initialize = () => {
+const createMain = () => {
 	const { keyState, keydownListener, keyupListener, gameState, getNextGameState } = initializeState({
 		configuration,
 		onKeyStateChange: (nextKeyState) => {
@@ -12,20 +12,6 @@ const initialize = () => {
 	document.addEventListener('keyup', keyupListener); // side-effect
 
 	const { fragment, context, render } = initializeRender();
-
-	document.querySelector(configuration.rootSelector).appendChild(fragment); // side-effect
-
-	return {
-		keyState,
-		gameState,
-		getNextGameState,
-		context,
-		render,
-	};
-};
-
-const createMain = () => {
-	const { keyState, gameState, getNextGameState, context, render } = initialize();
 
 	let lastTimestamp = window.performance.now();
 	const gameLoop = (timestamp) => {
@@ -40,6 +26,8 @@ const createMain = () => {
 			Object.assign(gameState, nextGameState); // side-effect
 		}
 	};
+
+	document.querySelector(configuration.rootSelector).appendChild(fragment); // side-effect
 
 	return gameLoop;
 };
