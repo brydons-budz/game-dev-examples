@@ -1,5 +1,13 @@
 {
 	"editor.formatOnSave": true,
 	"editor.defaultFormatter": "esbenp.prettier-vscode",
-	"editor.codeActionsOnSave": ["source.fixAll.eslint"]
+	"editor.codeActionsOnSave": ["source.fixAll.eslint"],
+	"files.exclude": {
+		"**/.git": false,
+		"**/.svn": true,
+		"**/.hg": true,
+		"**/CVS": true,
+		"**/.DS_Store": true,
+		"**/Thumbs.db": true
+	}
 }
