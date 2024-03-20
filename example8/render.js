@@ -61,6 +61,14 @@ export const initializeRender = () => {
 				return canvasElement;
 			}
 
+			// When game is over, draw the "game over" message
+			if (gameState.mode === 'gameOver') {
+				const winner = gameState.player1.score > gameState.player2.score ? 'Player 1' : 'Player 2';
+				context.fillText(`${winner} wins!`, centerX, centerY - 30);
+				context.fillText(`(Press any key to play again)`, centerX, centerY + 40);
+				return canvasElement;
+			}
+
 			// Draw the scores
 			context.fillText(gameState.player1.score.toString(), centerX - configuration.scores.fromCenterX, configuration.scores.fromTop);
 			context.fillText(gameState.player2.score.toString(), centerX + configuration.scores.fromCenterX, configuration.scores.fromTop);
